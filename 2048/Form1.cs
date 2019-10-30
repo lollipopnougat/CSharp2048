@@ -14,14 +14,14 @@ namespace _2048
         public Form1()
         {
             InitializeComponent();
-            duaLabelArray = new Label[,]
+            duaLabelArray = new Label[,] // 显示用文本标签
             {
                 { label1, label2, label3, label4 },
                 { label5, label6, label7, label8 },
                 { label9, label10, label11, label12 },
                 { label13, label14, label15, label16 }
             };
-            dualTLPArray = new TableLayoutPanel[,]
+            dualTLPArray = new TableLayoutPanel[,] // 背景色显示用方块
             {
                 {tableLayoutPanel2, tableLayoutPanel3, tableLayoutPanel4, tableLayoutPanel5 },
                 {tableLayoutPanel6, tableLayoutPanel7, tableLayoutPanel8, tableLayoutPanel9 },
@@ -29,23 +29,19 @@ namespace _2048
                 {tableLayoutPanel14, tableLayoutPanel15, tableLayoutPanel16, tableLayoutPanel17 }
             };
             MapSync(game.Map);
-            //for(int i = 0; i < game.GenerateCount; i++)
-            //{
-            //    duaLabelArray[game.Coords[i].x, game.Coords[i].y].Text = game.GenerateNumbers[i].ToString();
-            //    dualTLPArray[game.Coords[i].x, game.Coords[i].y].BackColor = game.SetNumber(game.Coords[i], game.GenerateNumbers[i]);
-            //}
         }
+
+        private Game game = new Game(); // 2048游戏对象
+        private Label[,] duaLabelArray; 
+        private TableLayoutPanel[,] dualTLPArray;
+
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            //switch (keyData)
-            //{
-            //    case Keys.Tab: label1.Text = "1"; break;
-            //    case Keys.Left: label1.Text = "2"; break;
-            //    case Keys.Right: label1.Text = "3"; break;
-            //}
             if (keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Left || keyData == Keys.Right) return false;
             else return base.ProcessDialogKey(keyData);
         }
+
+        // 方向按键点击事件处理函数
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (game.gameIsOver)
@@ -73,8 +69,9 @@ namespace _2048
                 MessageBox.Show(err.ToString(), "啊哟", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            //MessageBox.Show(game.num.ToString());
         }
+
+        // 界面同步函数
         private void MapSync(int[,] orimap)
         {
             for (int i = 0; i < 4; i++)
@@ -88,9 +85,8 @@ namespace _2048
             }
             label18.Text = "分数: " + game.Scores.ToString();
         }
-        private Game game = new Game();
-        private Label[,] duaLabelArray;
-        private TableLayoutPanel[,] dualTLPArray;
+        
+        // 颜色字典
         Dictionary<int, Color> colorMap = new Dictionary<int, Color>()
         {
             { 0, Color.AliceBlue },
@@ -108,6 +104,7 @@ namespace _2048
             { 4096, Color.RoyalBlue }
         };
 
+        // 重来按钮点击事件函数
         private void button1_Click(object sender, EventArgs e)
         {
             game.Restart();
@@ -115,11 +112,8 @@ namespace _2048
         }
     }
 
-
-    
-
-
-    struct coord
+    // 自定义的坐标结构体
+    struct coord 
     {
         public coord(int ix = 0, int iy = 0)
         {
