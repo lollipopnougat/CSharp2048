@@ -62,6 +62,7 @@ namespace _2048
             }
             catch (GameOverException er)
             {
+                
                 MessageBox.Show(er.Message, "啊哟", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception err) 

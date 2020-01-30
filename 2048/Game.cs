@@ -9,11 +9,13 @@ namespace _2048
     {
         public Game()
         {
-            currentGenerateCount = random.Next(1, 2);
+            if (random.NextDouble() > 0.8) currentGenerateCount = 2;
+            else currentGenerateCount = 1;
+            //currentGenerateCount = random.Next(1, 2);
             for (int i = 0; i < currentGenerateCount; i++)
             {
-                if (random.NextDouble() > 0.66) currentGenerateNumbers[i] = 4; // 出现4的概率 1/3
-                else currentGenerateNumbers[i] = 2; // 出现2的概率为 2/3
+                if (random.NextDouble() > 0.8) currentGenerateNumbers[i] = 4; // 出现4的概率 1/5
+                else currentGenerateNumbers[i] = 2; // 出现2的概率为 4/5
                 currentCoord[i] = GetAvailableCoord();
                 map[currentCoord[i].x, currentCoord[i].y] = currentGenerateNumbers[i];
             }
@@ -64,6 +66,7 @@ namespace _2048
                     scores = 0;
                 }
             }
+            gameIsOver = false;
             Update();
         }
 
@@ -71,10 +74,13 @@ namespace _2048
         private void Update()
         {
             int nums = GetAvailableBlankNums();
-            if (nums > 1) currentGenerateCount = random.Next(1, 2);
+            if (nums > 1) {
+                if (random.NextDouble() > 0.8) currentGenerateCount = 2;
+                else currentGenerateCount = 1;
+            }
             else if (nums == 1) currentGenerateCount = 1;
             else if (!IsFaild()) currentGenerateCount = 0;
-            else throw new GameOverException("游戏结束");
+            //else throw new GameOverException("游戏结束");
             for (int i = 0; i < currentGenerateCount; i++)
             {
                 if (random.NextDouble() > 0.66) currentGenerateNumbers[i] = 4;
@@ -169,7 +175,8 @@ namespace _2048
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++) auxArray[j] = map[j, i];
-                if (CommonMove()) flag = true;
+                if (!flag) flag = CommonMove();
+                else CommonMove();
                 for (int j = 0; j < 4; j++) map[j, i] = auxArray[j];
             }
             if (flag) Update();
@@ -181,7 +188,8 @@ namespace _2048
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++) auxArray[3 - j] = map[j, i];
-                if (CommonMove()) flag = true;
+                if (!flag) flag = CommonMove();
+                else CommonMove();
                 for (int j = 0; j < 4; j++) map[j, i] = auxArray[3 - j];
             }
             if (flag) Update();
@@ -193,7 +201,8 @@ namespace _2048
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++) auxArray[j] = map[i, j];
-                if (CommonMove()) flag = true;
+                if (!flag) flag = CommonMove();
+                else CommonMove();
                 for (int j = 0; j < 4; j++) map[i, j] = auxArray[j];
             }
             if (flag) Update();
@@ -206,7 +215,8 @@ namespace _2048
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++) auxArray[3 - j] = map[i, j];
-                if (CommonMove()) flag = true;
+                if (!flag) flag = CommonMove();
+                else CommonMove();
                 for (int j = 0; j < 4; j++) map[i, j] = auxArray[3 - j];
             }
             if (flag) Update();
